@@ -6,8 +6,6 @@ networks:
 volumes:
   prometheus-data:
     driver: local
-  grafana-data:
-    driver: local
 
 services:
   prometheus:
@@ -26,24 +24,6 @@ services:
       - "9090:9090"
     networks:
       - monitoring
-
-  grafana:
-    image: grafana/grafana:10.2.3
-    container_name: grafana
-    restart: unless-stopped
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
-      - GF_USERS_ALLOW_SIGN_UP=false
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
-    ports:
-      - "3000:3000"
-    networks:
-      - monitoring
-    depends_on:
-      - prometheus
 
   node-exporter:
     image: quay.io/prometheus/node-exporter:v1.8.2
