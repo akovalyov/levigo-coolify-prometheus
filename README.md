@@ -1,6 +1,6 @@
 # Prometheus Coolify Service
 
-A monitoring stack for [Coolify](https://coolify.io/) deployments featuring Prometheus, Node Exporter, and cAdvisor.
+A monitoring stack for [Coolify](https://coolify.io/) deployments featuring Prometheus, Node Exporter, cAdvisor, and NVIDIA GPU monitoring.
 
 Based on the guide at [peturgeorgievv.com](https://peturgeorgievv.com/blog/deploy-prometheus-and-grafana-in-coolify-code-example).
 
@@ -9,6 +9,7 @@ Based on the guide at [peturgeorgievv.com](https://peturgeorgievv.com/blog/deplo
 - **Prometheus** - Time-series database and monitoring server
 - **Node Exporter** - System metrics collector (CPU, memory, disk, network)
 - **cAdvisor** - Container metrics collector
+- **DCGM Exporter** - NVIDIA GPU metrics collector
 
 ## 🚀 Quick Start
 
@@ -16,6 +17,7 @@ Based on the guide at [peturgeorgievv.com](https://peturgeorgievv.com/blog/deplo
 
 - Docker and Docker Compose installed
 - [Coolify](https://coolify.io/) instance (for deployment)
+- For GPU monitoring: [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 
 ### Local Development
 
@@ -33,6 +35,7 @@ Based on the guide at [peturgeorgievv.com](https://peturgeorgievv.com/blog/deplo
 3. Access the services:
    - **Prometheus**: http://localhost:9090
    - **cAdvisor**: http://localhost:8080
+   - **DCGM Exporter**: http://localhost:9400/metrics
 
 ### Deploy to Coolify
 
@@ -54,6 +57,13 @@ Based on the guide at [peturgeorgievv.com](https://peturgeorgievv.com/blog/deplo
 - Container network I/O
 - Docker container statistics
 
+### GPU Metrics (DCGM Exporter)
+- GPU utilization
+- GPU memory usage
+- GPU temperature
+- Power consumption
+- SM clock speeds
+
 ## 🔧 Configuration
 
 ### Prometheus Configuration
@@ -66,6 +76,10 @@ scrape_configs:
     static_configs:
       - targets: ["your-app:port"]
 ```
+
+### GPU Monitoring Setup
+
+The DCGM Exporter requires NVIDIA GPUs and the NVIDIA Container Toolkit installed on the host. If you don't have NVIDIA GPUs, you can comment out or remove the `dcgm-exporter` service from `docker-compose.yml`.
 
 ## 📁 Project Structure
 
@@ -88,6 +102,7 @@ scrape_configs:
 - [Coolify Documentation](https://coolify.io/docs/)
 - [Node Exporter](https://github.com/prometheus/node_exporter)
 - [cAdvisor](https://github.com/google/cadvisor)
+- [DCGM Exporter](https://github.com/NVIDIA/dcgm-exporter)
 
 ## 📝 License
 
